@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.card{
+  transition: all .3s !important;
+}
+.card:hover{
+  padding: 20px 0 !important;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
+
+.icon-btn{
+  transition: all 3ms !important;
+}
+
+.icon-btn:hover{
+  background-color: #5c5c5c !important;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
+}
