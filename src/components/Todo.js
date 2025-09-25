@@ -10,7 +10,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-export default function Todo() {
+export default function Todo({ todo, checkHandler }) {
   return (
     <>
       <Card
@@ -20,7 +20,8 @@ export default function Todo() {
         <CardContent>
           <Grid container spacing={2}>
             <Grid size={8} sx={{ textAlign: "left", background: "" }}>
-              <Typography variant="h5">My Tasks</Typography>
+              <Typography variant="h5">{todo.title}</Typography>
+              <Typography variant="h5">{todo.description}</Typography>
             </Grid>
 
             {/* Action Buttons */}
@@ -32,20 +33,24 @@ export default function Todo() {
                 alignItems: "center",
               }}
             >
-              <IconButton aria-label="delete">
+              <IconButton
+                onClick={() => {
+                  checkHandler(todo.id);
+                }}
+              >
                 <CheckIcon
                   className="icon-btn"
                   sx={{
                     height: "50px",
                     width: "50px",
-                    background: "white",
-                    color: "#8bc34a",
+                    background: todo.isCompleted ? "#8bc34a" : "white",
+                    color: todo.isCompleted ? "white" : "#8bc34a",
                     border: "solid #8bc34a 3px",
                     borderRadius: "50%",
                   }}
                 />
               </IconButton>
-              <IconButton aria-label="delete">
+              <IconButton>
                 <EditIcon
                   className="icon-btn"
                   sx={{
@@ -58,7 +63,7 @@ export default function Todo() {
                   }}
                 />
               </IconButton>
-              <IconButton aria-label="delete">
+              <IconButton>
                 <DeleteIcon
                   className="icon-btn"
                   sx={{

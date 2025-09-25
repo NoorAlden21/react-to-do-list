@@ -1,21 +1,72 @@
 import * as React from "react";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Divider } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
+//Components
 import Todo from "./Todo";
 
+//others
+import { v4 as uuid } from "uuid";
+import { useState } from "react";
+
+const initialTodos = [
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+];
+
 export default function TodoList() {
+  const [todos, setTodos] = useState(initialTodos);
+  const [input, setInput] = useState("");
+  const todosJsx = todos.map((t) => {
+    return <Todo key={t.id} todo={t} checkHandler={checkClickHandler} />;
+  });
+
+  function addClickHandler() {
+    setTodos([...todos, { id: uuid(), title: input, isCompleted: false }]);
+    setInput("");
+  }
+
+  function checkClickHandler(todoId) {
+    const newTodos = todos.map((todo) => {
+      if (todo.id == todoId) {
+        return { ...todo, isCompleted: !todo.isCompleted };
+      } else {
+        return { ...todo };
+      }
+    });
+    setTodos(newTodos);
+  }
   return (
     <Container maxWidth="md">
       <Card sx={{ minWidth: 275 }}>
         <CardContent>
-          <Typography variant="h2">My Tasks</Typography>
+          <Typography variant="h2" fontWeight="bold">
+            My Tasks
+          </Typography>
           <Divider />
 
           {/* Filters */}
@@ -34,12 +85,39 @@ export default function TodoList() {
           {/*=== Filters ===*/}
 
           {/* Todos */}
-          <Todo />
+          {todosJsx}
           {/*=== Todos ===*/}
+
+          {/* Input + Add Button */}
+
+          <Grid container spacing={2}>
+            <Grid size={8}>
+              <TextField
+                id="outlined-basic"
+                label="Task title"
+                variant="outlined"
+                style={{ width: "100%", height: "100%" }}
+                value={input}
+                onChange={(event) => {
+                  setInput(event.target.value);
+                }}
+              />
+            </Grid>
+
+            <Grid size={4}>
+              <Button
+                variant="contained"
+                style={{ width: "100%", height: "100%" }}
+                onClick={() => {
+                  addClickHandler();
+                }}
+              >
+                Add
+              </Button>
+            </Grid>
+          </Grid>
+          {/*=== Input + Add Button ===*/}
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
       </Card>
     </Container>
   );

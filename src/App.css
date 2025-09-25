@@ -53,3 +53,19 @@
   background-color: #5c5c5c !important;
   box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4);
 }
+
+@font-face {
+  font-family: A;
+  src: url("../public/fonts/AlanSans-Black.ttf");
+  font-weight: 900;
+}
+@font-face {
+  font-family: A;
+  src: url("../public/fonts/AlanSans-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: A;
+  src: url("../public/fonts/AlanSans-Light.ttf");
+  font-weight: 100;
+}
