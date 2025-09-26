@@ -39,6 +39,7 @@ export default function Todo({ todo }) {
       }
     });
     setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   }
 
   function deleteConfirmHandler() {
@@ -46,6 +47,7 @@ export default function Todo({ todo }) {
       return t.id !== todo.id;
     });
     setTodos([...newTodos]);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   }
 
   function deleteClickHandler() {
@@ -77,6 +79,7 @@ export default function Todo({ todo }) {
       }
     });
     setTodos([...newTodos]);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
     handleUpdateDialogClose();
   }
   return (

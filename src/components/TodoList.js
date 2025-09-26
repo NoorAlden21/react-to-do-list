@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Todo from "./Todo";
 
 //others
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import { v4 as uuid } from "uuid";
 
@@ -27,10 +27,18 @@ export default function TodoList() {
   });
 
   function addClickHandler() {
-    setTodos([...todos, { id: uuid(), title: input, isCompleted: false }]);
+    const newTodos = [
+      ...todos,
+      { id: uuid(), title: input, isCompleted: false },
+    ];
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
     setInput("");
   }
 
+  useEffect(() => {
+    setTodos(JSON.parse(localStorage.getItem("todos")));
+  }, []);
   return (
     <Container maxWidth="md">
       <Card sx={{ minWidth: 275 }}>
