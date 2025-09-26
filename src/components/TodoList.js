@@ -21,6 +21,7 @@ import { v4 as uuid } from "uuid";
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
   const [input, setInput] = useState("");
+
   const todosJsx = todos.map((t) => {
     return <Todo key={t.id} todo={t} />;
   });
