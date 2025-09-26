@@ -14,35 +14,15 @@ import Button from "@mui/material/Button";
 import Todo from "./Todo";
 
 //others
+import { useState, useContext } from "react";
+import { TodosContext } from "../contexts/TodosContext";
 import { v4 as uuid } from "uuid";
-import { useState } from "react";
-
-const initialTodos = [
-  {
-    id: uuid(),
-    title: "Reading 3 books",
-    description: "Should finish this task this month",
-    isCompleted: false,
-  },
-  {
-    id: uuid(),
-    title: "Reading 3 books",
-    description: "Should finish this task this month",
-    isCompleted: false,
-  },
-  {
-    id: uuid(),
-    title: "Reading 3 books",
-    description: "Should finish this task this month",
-    isCompleted: false,
-  },
-];
 
 export default function TodoList() {
-  const [todos, setTodos] = useState(initialTodos);
+  const { todos, setTodos } = useContext(TodosContext);
   const [input, setInput] = useState("");
   const todosJsx = todos.map((t) => {
-    return <Todo key={t.id} todo={t} checkHandler={checkClickHandler} />;
+    return <Todo key={t.id} todo={t} />;
   });
 
   function addClickHandler() {
@@ -50,16 +30,6 @@ export default function TodoList() {
     setInput("");
   }
 
-  function checkClickHandler(todoId) {
-    const newTodos = todos.map((todo) => {
-      if (todo.id == todoId) {
-        return { ...todo, isCompleted: !todo.isCompleted };
-      } else {
-        return { ...todo };
-      }
-    });
-    setTodos(newTodos);
-  }
   return (
     <Container maxWidth="md">
       <Card sx={{ minWidth: 275 }}>

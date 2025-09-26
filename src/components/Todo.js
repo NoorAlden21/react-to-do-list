@@ -10,7 +10,24 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-export default function Todo({ todo, checkHandler }) {
+//others
+
+import { useContext } from "react";
+import { TodosContext } from "../contexts/TodosContext";
+
+export default function Todo({ todo }) {
+  const { todos, setTodos } = useContext(TodosContext);
+
+  function checkClickHandler(todoId) {
+    const newTodos = todos.map((todo) => {
+      if (todo.id === todoId) {
+        return { ...todo, isCompleted: !todo.isCompleted };
+      } else {
+        return { ...todo };
+      }
+    });
+    setTodos(newTodos);
+  }
   return (
     <>
       <Card
@@ -35,7 +52,7 @@ export default function Todo({ todo, checkHandler }) {
             >
               <IconButton
                 onClick={() => {
-                  checkHandler(todo.id);
+                  checkClickHandler(todo.id);
                 }}
               >
                 <CheckIcon

@@ -2,6 +2,10 @@ import logo from "./logo.svg";
 import "./App.css";
 import TodoList from "./components/TodoList.js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { TodosContext } from "./contexts/TodosContext.js";
+
+import { v4 as uuid } from "uuid";
+import { useState } from "react";
 
 const theme = createTheme({
   typography: {
@@ -9,7 +13,29 @@ const theme = createTheme({
   },
 });
 
+const initialTodos = [
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+  {
+    id: uuid(),
+    title: "Reading 3 books",
+    description: "Should finish this task this month",
+    isCompleted: false,
+  },
+];
+
 function App() {
+  const [todos, setTodos] = useState(initialTodos);
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -22,7 +48,9 @@ function App() {
           alignItems: "center",
         }}
       >
-        <TodoList />
+        <TodosContext.Provider value={{ todos, setTodos }}>
+          <TodoList />
+        </TodosContext.Provider>
       </div>
     </ThemeProvider>
   );
