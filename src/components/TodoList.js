@@ -107,6 +107,7 @@ export default function TodoList() {
                 onClick={() => {
                   addClickHandler();
                 }}
+                disabled={!input}
               >
                 Add
               </Button>

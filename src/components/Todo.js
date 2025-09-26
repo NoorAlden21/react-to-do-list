@@ -167,7 +167,14 @@ export default function Todo({ todo }) {
         <CardContent>
           <Grid container spacing={2}>
             <Grid size={8} sx={{ textAlign: "left", background: "" }}>
-              <Typography variant="h5">{todo.title}</Typography>
+              <Typography
+                variant="h5"
+                style={{
+                  textDecoration: todo.isCompleted ? "line-through" : "none",
+                }}
+              >
+                {todo.title}
+              </Typography>
               <Typography variant="h5">{todo.description}</Typography>
             </Grid>
 
