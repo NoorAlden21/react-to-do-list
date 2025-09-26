@@ -21,8 +21,25 @@ import { v4 as uuid } from "uuid";
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
   const [input, setInput] = useState("");
+  const [displayedTodos, setDisplayedTodos] = useState("all");
 
-  const todosJsx = todos.map((t) => {
+  function changeDisplayedTodos(e) {
+    setDisplayedTodos(e.target.value);
+  }
+
+  let todosToBeRendered = todos;
+
+  if (displayedTodos === "completed") {
+    todosToBeRendered = todos.filter((t) => {
+      return t.isCompleted;
+    });
+  } else if (displayedTodos === "unCompleted") {
+    todosToBeRendered = todos.filter((t) => {
+      return !t.isCompleted;
+    });
+  }
+
+  const todosJsx = todosToBeRendered.map((t) => {
     return <Todo key={t.id} todo={t} />;
   });
 
@@ -51,15 +68,15 @@ export default function TodoList() {
           {/* Filters */}
 
           <ToggleButtonGroup
-            // value={alignment}
+            value={displayedTodos}
             exclusive
-            //onChange={handleAlignment}
+            onChange={changeDisplayedTodos}
             aria-label="text alignment"
             style={{ marginTop: "30px" }}
           >
-            <ToggleButton>All</ToggleButton>
-            <ToggleButton>Completed</ToggleButton>
-            <ToggleButton>UnCompleted</ToggleButton>
+            <ToggleButton value={"all"}>All</ToggleButton>
+            <ToggleButton value={"completed"}>Completed</ToggleButton>
+            <ToggleButton value={"unCompleted"}>UnCompleted</ToggleButton>
           </ToggleButtonGroup>
           {/*=== Filters ===*/}
 
