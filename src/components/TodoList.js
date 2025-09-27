@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Todo from "./Todo";
 
 //others
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import { TodosContext } from "../contexts/TodosContext";
 import { v4 as uuid } from "uuid";
 
@@ -29,14 +29,22 @@ export default function TodoList() {
 
   let todosToBeRendered = todos;
 
-  if (displayedTodos === "completed") {
-    todosToBeRendered = todos.filter((t) => {
+  const completedTodos = useMemo(() => {
+    return todos.filter((t) => {
       return t.isCompleted;
     });
-  } else if (displayedTodos === "unCompleted") {
-    todosToBeRendered = todos.filter((t) => {
+  }, [todos]);
+
+  const unCompletedTodos = useMemo(() => {
+    return todos.filter((t) => {
       return !t.isCompleted;
     });
+  }, [todos]);
+
+  if (displayedTodos === "completed") {
+    todosToBeRendered = completedTodos;
+  } else if (displayedTodos === "unCompleted") {
+    todosToBeRendered = unCompletedTodos;
   }
 
   const todosJsx = todosToBeRendered.map((t) => {
@@ -54,11 +62,11 @@ export default function TodoList() {
   }
 
   useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem("todos")));
+    setTodos(JSON.parse(localStorage.getItem("todos")) ?? []);
   }, []);
   return (
     <Container maxWidth="md">
-      <Card sx={{ minWidth: 275 }}>
+      <Card sx={{ minWidth: 275, maxHeight: "80vh", overflow: "scroll" }}>
         <CardContent>
           <Typography variant="h2" fontWeight="bold">
             My Tasks
