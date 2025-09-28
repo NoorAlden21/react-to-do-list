@@ -3,10 +3,9 @@ import "./App.css";
 import TodoList from "./components/TodoList.js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { TodosContext } from "./contexts/TodosContext.js";
-
 import { v4 as uuid } from "uuid";
 import { useState } from "react";
-
+import { ToastProvider } from "./contexts/ToastContext.js";
 const theme = createTheme({
   typography: {
     fontFamily: ["A"],
@@ -36,6 +35,7 @@ const initialTodos = [
 
 function App() {
   const [todos, setTodos] = useState(initialTodos);
+
   return (
     <ThemeProvider theme={theme}>
       <div
@@ -48,9 +48,11 @@ function App() {
           alignItems: "center",
         }}
       >
-        <TodosContext.Provider value={{ todos, setTodos }}>
-          <TodoList />
-        </TodosContext.Provider>
+        <ToastProvider>
+          <TodosContext.Provider value={{ todos, setTodos }}>
+            <TodoList />
+          </TodosContext.Provider>
+        </ToastProvider>
       </div>
     </ThemeProvider>
   );
