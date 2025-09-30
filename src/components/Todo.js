@@ -11,26 +11,17 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 //others
 
-import { useContext } from "react";
-import { TodosContext } from "../contexts/TodosContext";
 import { useToast } from "../contexts/ToastContext";
+import { useTodos } from "../contexts/TodosContext";
 
 export default function Todo({ todo, deleteClickHandler, updateClickHandler }) {
-  const { todos, setTodos } = useContext(TodosContext);
   const { showHideSnackBar } = useToast();
-  function checkClickHandler(todoId) {
-    const newTodos = todos.map((todo) => {
-      if (todo.id === todoId) {
-        return { ...todo, isCompleted: !todo.isCompleted };
-      } else {
-        return { ...todo };
-      }
-    });
-    showHideSnackBar("the task was checked successfully!");
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
-  }
+  const { todos, dispatch } = useTodos();
 
+  function checkClickHandler(todoId) {
+    dispatch({ type: "checked", payload: { todoId } });
+    showHideSnackBar("the task was checked successfully!");
+  }
   return (
     <>
       <Card

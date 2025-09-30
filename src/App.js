@@ -6,6 +6,7 @@ import { TodosContext } from "./contexts/TodosContext.js";
 import { v4 as uuid } from "uuid";
 import { useState } from "react";
 import { ToastProvider } from "./contexts/ToastContext.js";
+import TodosProvider from "./contexts/TodosContext.js";
 const theme = createTheme({
   typography: {
     fontFamily: ["A"],
@@ -48,11 +49,11 @@ function App() {
           alignItems: "center",
         }}
       >
-        <ToastProvider>
-          <TodosContext.Provider value={{ todos, setTodos }}>
+        <TodosProvider>
+          <ToastProvider>
             <TodoList />
-          </TodosContext.Provider>
-        </ToastProvider>
+          </ToastProvider>
+        </TodosProvider>
       </div>
     </ThemeProvider>
   );

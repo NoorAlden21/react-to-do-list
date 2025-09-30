@@ -20,16 +20,14 @@ import Todo from "./Todo";
 
 //others
 import { useState, useContext, useEffect, useMemo } from "react";
-import { TodosContext } from "../contexts/TodosContext";
+import { useTodos } from "../contexts/TodosContext";
 import { useToast } from "../contexts/ToastContext";
 
-import { v4 as uuid } from "uuid";
-
 export default function TodoList() {
-  const { todos, setTodos } = useContext(TodosContext);
   const [input, setInput] = useState("");
   const [displayedTodos, setDisplayedTodos] = useState("all");
   const { showHideSnackBar } = useToast();
+  const { todos, dispatch } = useTodos();
 
   const [currentTodo, setCurrentTodo] = useState({});
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -64,18 +62,15 @@ export default function TodoList() {
   }
 
   function addClickHandler() {
-    const newTodos = [
-      ...todos,
-      { id: uuid(), title: input, isCompleted: false },
-    ];
-    setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    dispatch({ type: "added", payload: { title: input } });
     setInput("");
     showHideSnackBar("new task has been added successfully!");
   }
 
   useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem("todos")) ?? []);
+    dispatch({
+      type: "fetched",
+    });
   }, []);
 
   //Handlers
@@ -91,11 +86,7 @@ export default function TodoList() {
   }
 
   function deleteConfirmHandler() {
-    const newTodos = todos.filter((t) => {
-      return t.id !== currentTodo.id;
-    });
-    setTodos([...newTodos]);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    dispatch({ type: "deleted", payload: { currentTodo } });
     showHideSnackBar("the task has been removed successfully!");
     handleClose();
   }
@@ -114,20 +105,14 @@ export default function TodoList() {
   }
 
   function updateConfirmHanlder() {
-    const newTodos = todos.map((t) => {
-      if (t.id === currentTodo.id) {
-        return {
-          ...t,
-          title: updateTodo.title,
-          description: updateTodo.description,
-        };
-      } else {
-        return t;
-      }
+    dispatch({
+      type: "updated",
+      payload: {
+        currentTodo,
+        updateTodo,
+      },
     });
-    setTodos([...newTodos]);
     showHideSnackBar("the task has been updated successfully!");
-    localStorage.setItem("todos", JSON.stringify(newTodos));
     handleUpdateDialogClose();
   }
 
